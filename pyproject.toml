@@ -12,6 +12,7 @@ dependencies = [
     "pydantic-ai>=2.46.0",
     "pydantic-settings>=2.15.0",
     "redis>=8.1.0",
+    "rich>=15.0.0",
     "sqlalchemy>=2.0.54",
     "typer>=0.27.2",
     "uvicorn>=0.52.4",
