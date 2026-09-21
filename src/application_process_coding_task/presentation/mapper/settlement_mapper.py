@@ -5,6 +5,7 @@ from application_process_coding_task.application.dto.settlement_result import (
     SettlementResult,
 )
 
+from ..dto.settlement_batch_request import SettlementBatchRequest
 from ..dto.settlement_request import SettlementRequest
 from ..dto.settlement_response import SettlementResponse
 
@@ -12,6 +13,17 @@ from ..dto.settlement_response import SettlementResponse
 def to_settlement_query(request: SettlementRequest) -> SettlementQuery:
     return SettlementQuery(
         ric=request.ric,
+        trade_date=request.trade_date,
+        output_type=request.output_type,
+    )
+
+
+def to_batch_settlement_query(
+    request: SettlementRequest,
+    batch_request: SettlementBatchRequest,
+) -> SettlementQuery:
+    return SettlementQuery(
+        rics=batch_request.rics,
         trade_date=request.trade_date,
         output_type=request.output_type,
     )

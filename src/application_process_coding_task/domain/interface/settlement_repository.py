@@ -11,5 +11,6 @@ class SettlementRepository(Protocol):
         self,
         trade_date: date,
         ric: str | None = None,
+        rics: list[str] | None = None,
     ) -> list[SettlementRecord]:
-        """Return settlement records for a date, optionally filtered by RIC."""
+        """Return settlement records for a date, optionally filtered by RICs."""

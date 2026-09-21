@@ -12,9 +12,14 @@ from application_process_coding_task.application.service.settlement_lookup_servi
 )
 
 from ..dependency import get_settlement_service
+from ..dto.settlement_batch_request import SettlementBatchRequest
 from ..dto.settlement_request import SettlementRequest
 from ..dto.settlement_response import SettlementResponse
-from ..mapper import to_settlement_query, to_settlement_response
+from ..mapper import (
+    to_batch_settlement_query,
+    to_settlement_query,
+    to_settlement_response,
+)
 
 router = APIRouter(prefix="/settlements", tags=["settlements"])
 
@@ -25,6 +30,23 @@ def get_settlement(
     service: Annotated[SettlementLookupService, Depends(get_settlement_service)],
 ) -> list[SettlementResponse] | Response:
     query: SettlementQuery = to_settlement_query(request)
+    results = service.find(query)
+    responses = [to_settlement_response(result) for result in results]
+
+    match request.output_type:
+        case OutputFormat.JSON:
+            return responses
+        case OutputFormat.CSV:
+            return _to_csv_response(responses)
+
+
+@router.post("", response_model=list[SettlementResponse])
+def post_settlements(
+    request: Annotated[SettlementRequest, Depends()],
+    batch_request: SettlementBatchRequest,
+    service: Annotated[SettlementLookupService, Depends(get_settlement_service)],
+) -> list[SettlementResponse] | Response:
+    query = to_batch_settlement_query(request, batch_request)
     results = service.find(query)
     responses = [to_settlement_response(result) for result in results]
 

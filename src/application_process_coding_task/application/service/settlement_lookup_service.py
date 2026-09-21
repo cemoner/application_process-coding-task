@@ -10,7 +10,7 @@ class SettlementLookupService:
         self.repository = repository
 
     def find(self, query: SettlementQuery) -> list[SettlementResult]:
-        records = self.repository.find_by_date(query.trade_date, query.ric)
+        records = self.repository.find_by_date(query.trade_date, query.ric, query.rics)
         return [
             SettlementResult(
                 asset_subtype=record.asset_subtype,

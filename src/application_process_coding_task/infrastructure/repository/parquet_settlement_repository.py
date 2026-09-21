@@ -18,6 +18,7 @@ class ParquetSettlementRepository:
         self,
         trade_date: date,
         ric: str | None = None,
+        rics: list[str] | None = None,
     ) -> list[SettlementRecord]:
         query = """
             SELECT 'FUT', "#RIC", "Date-Time", "Price"
@@ -29,6 +30,10 @@ class ParquetSettlementRepository:
         if ric is not None:
             query += ' AND "#RIC" = ?'
             parameters.append(ric)
+        elif rics:
+            placeholders = ", ".join("?" for _ in rics)
+            query += f' AND "#RIC" IN ({placeholders})'
+            parameters.extend(rics)
         query += """
             QUALIFY ROW_NUMBER() OVER (
                 PARTITION BY "#RIC"

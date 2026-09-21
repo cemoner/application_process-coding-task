@@ -65,3 +65,14 @@ def test_get_settlements_rejects_unsupported_output_type() -> None:
     )
 
     assert response.status_code == 422
+
+
+def test_post_settlements_filters_by_multiple_rics() -> None:
+    response = client.post(
+        "/settlements",
+        params={"date": "2026-09-04", "type": "json"},
+        json={"rics": ["SETH27", "SETH28"]},
+    )
+
+    assert response.status_code == 200
+    assert [record["RIC"] for record in response.json()] == ["SETH27", "SETH28"]
