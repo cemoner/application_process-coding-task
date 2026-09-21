@@ -3,8 +3,12 @@ import uvicorn
 from fastapi import FastAPI
 
 from application_process_coding_task.config import settings
+from application_process_coding_task.presentation.router.settlement_routes import (
+    router as settlement_router,
+)
 
 api = FastAPI(title=settings.name)
+api.include_router(settlement_router)
 cli = typer.Typer()
 
 
