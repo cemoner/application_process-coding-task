@@ -21,7 +21,7 @@ class ParquetEodRepository:
         rics: list[str] | None = None,
     ) -> list[EodRecord]:
         query = """
-            SELECT 'FUT', "#RIC", "Date-Time", "Price"
+            SELECT "#RIC", "Date-Time", "Bid Price", "Ask Price", "Price"
             FROM read_parquet(?)
             WHERE "Type" = 'Settlement Price'
               AND CAST("Date-Time" AS DATE) = ?
