@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from .output_format import OutputFormat
 
 
-class SettlementQuery(BaseModel):
+class EodQuery(BaseModel):
     ric: str | None = None
     rics: list[str] | None = None
     trade_date: date

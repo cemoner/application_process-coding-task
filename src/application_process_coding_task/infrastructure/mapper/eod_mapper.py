@@ -2,15 +2,15 @@ from collections.abc import Sequence
 from datetime import date
 from decimal import Decimal
 
-from application_process_coding_task.domain.entity.settlement_record import (
-    SettlementRecord,
+from application_process_coding_task.domain.entity.eod_record import (
+    EodRecord,
 )
 
 
-def to_settlement_record(row: Sequence[object]) -> SettlementRecord:
+def to_eod_record(row: Sequence[object]) -> EodRecord:
     if len(row) != 4:
         raise ValueError(
-            "Settlement row must contain asset subtype, RIC, trade date, and settlement price"
+            "EOD row must contain asset subtype, RIC, trade date, and settlement price"
         )
 
     asset_subtype, ric, trade_date, settlement_price = row
@@ -28,7 +28,7 @@ def to_settlement_record(row: Sequence[object]) -> SettlementRecord:
         trade_date if isinstance(trade_date, date) else date.fromisoformat(trade_date[:10])
     )
 
-    return SettlementRecord(
+    return EodRecord(
         asset_subtype=asset_subtype,
         ric=ric,
         trade_date=parsed_trade_date,

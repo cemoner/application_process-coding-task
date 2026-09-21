@@ -17,4 +17,4 @@ RUN uv sync --frozen --no-dev
 
 EXPOSE 8000
 
-CMD ["uv", "run", "python", "-m", "application_process_coding_task.presentation.router.main"]
+CMD ["uv", "run", "python", "-m", "application_process_coding_task.main"]

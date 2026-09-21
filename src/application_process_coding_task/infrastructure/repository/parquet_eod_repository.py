@@ -1,16 +1,16 @@
 from datetime import date
 from pathlib import Path
 
-from application_process_coding_task.domain.entity.settlement_record import SettlementRecord
+from application_process_coding_task.domain.entity.eod_record import EodRecord
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
     get_duckdb_connection,
 )
-from application_process_coding_task.infrastructure.mapper.settlement_mapper import (
-    to_settlement_record,
+from application_process_coding_task.infrastructure.mapper.eod_mapper import (
+    to_eod_record,
 )
 
 
-class ParquetSettlementRepository:
+class ParquetEodRepository:
     def __init__(self, source_path: Path) -> None:
         self.source_path = source_path
 
@@ -19,7 +19,7 @@ class ParquetSettlementRepository:
         trade_date: date,
         ric: str | None = None,
         rics: list[str] | None = None,
-    ) -> list[SettlementRecord]:
+    ) -> list[EodRecord]:
         query = """
             SELECT 'FUT', "#RIC", "Date-Time", "Price"
             FROM read_parquet(?)
@@ -45,4 +45,4 @@ class ParquetSettlementRepository:
         with get_duckdb_connection(self.source_path) as connection:
             rows = connection.execute(query, parameters).fetchall()
 
-        return [to_settlement_record(row) for row in rows]
+        return [to_eod_record(row) for row in rows]

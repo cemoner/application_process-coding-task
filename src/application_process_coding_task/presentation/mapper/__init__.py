@@ -1,11 +1,11 @@
-from .settlement_mapper import (
-    to_batch_settlement_query,
-    to_settlement_query,
-    to_settlement_response,
+from .eod_mapper import (
+    to_batch_eod_query,
+    to_eod_query,
+    to_eod_response,
 )
 
 __all__ = [
-    "to_batch_settlement_query",
-    "to_settlement_query",
-    "to_settlement_response",
+    "to_batch_eod_query",
+    "to_eod_query",
+    "to_eod_response",
 ]

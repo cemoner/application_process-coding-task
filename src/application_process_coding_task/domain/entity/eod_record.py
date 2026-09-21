@@ -4,7 +4,7 @@ from decimal import Decimal
 
 
 @dataclass(frozen=True, slots=True)
-class SettlementRecord:
+class EodRecord:
     asset_subtype: str
     ric: str
     trade_date: date

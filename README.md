@@ -32,7 +32,7 @@ APP_TARGET_ORDERBOOK_PATH=target_orderbook.csv
 Start the API locally:
 
 ```bash
-uv run python -m application_process_coding_task.presentation.router.main
+uv run python -m application_process_coding_task.main
 ```
 
 The server listens on the configured host and port. Swagger UI is available at
@@ -86,11 +86,12 @@ uv run pytest
 
 ```text
 src/application_process_coding_task/
+├── application/
+├── domain/
+├── infrastructure/
+├── presentation/
 ├── config.py
-└── presentation/
-    └── router/
-        ├── cli.py
-        └── main.py
+└── main.py
 ```
 
 The supplied Parquet and CSV files are kept at the repository root and are available to

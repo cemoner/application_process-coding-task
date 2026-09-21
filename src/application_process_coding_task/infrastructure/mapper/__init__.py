@@ -1,3 +1,3 @@
-from .settlement_mapper import to_settlement_record
+from .eod_mapper import to_eod_record
 
-__all__ = ["to_settlement_record"]
+__all__ = ["to_eod_record"]

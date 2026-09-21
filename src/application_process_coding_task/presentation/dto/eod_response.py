@@ -3,7 +3,7 @@ from datetime import date
 from pydantic import BaseModel, Field
 
 
-class SettlementResponse(BaseModel):
+class EodResponse(BaseModel):
     asset_subtype: str = Field(alias="Asset SubType")
     ric: str = Field(alias="RIC")
     trade_date: date = Field(alias="Trade Date")

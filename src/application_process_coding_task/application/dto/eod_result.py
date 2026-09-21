@@ -4,7 +4,7 @@ from decimal import Decimal
 from pydantic import BaseModel
 
 
-class SettlementResult(BaseModel):
+class EodResult(BaseModel):
     asset_subtype: str
     ric: str
     trade_date: date

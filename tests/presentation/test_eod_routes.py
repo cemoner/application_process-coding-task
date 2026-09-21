@@ -9,7 +9,7 @@ client = TestClient(api)
 
 
 def test_get_settlements_returns_all_records_for_date() -> None:
-    response = client.get("/settlements", params={"date": "2026-09-04", "type": "json"})
+    response = client.get("/eod", params={"date": "2026-09-04", "type": "json"})
 
     assert response.status_code == 200
     records = response.json()
@@ -26,7 +26,7 @@ def test_get_settlements_returns_all_records_for_date() -> None:
 
 def test_get_settlements_filters_by_ric() -> None:
     response = client.get(
-        "/settlements",
+        "/eod",
         params={"ric": "SETH27", "date": "2026-09-04", "type": "json"},
     )
 
@@ -45,7 +45,7 @@ def test_get_settlements_filters_by_ric() -> None:
 
 def test_get_settlements_returns_csv() -> None:
     response = client.get(
-        "/settlements",
+        "/eod",
         params={"ric": "SETH27", "date": "2026-09-04", "type": "csv"},
     )
 
@@ -53,14 +53,14 @@ def test_get_settlements_returns_csv() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/csv")
-    assert response.headers["content-disposition"] == "attachment; filename=settlements.csv"
+    assert response.headers["content-disposition"] == "attachment; filename=eod.csv"
     assert rows[0]["RIC"] == "SETH27"
     assert rows[0]["Settlement Price"] == "118.6"
 
 
 def test_get_settlements_rejects_unsupported_output_type() -> None:
     response = client.get(
-        "/settlements",
+        "/eod",
         params={"date": "2026-09-04", "type": "xml"},
     )
 
@@ -69,7 +69,7 @@ def test_get_settlements_rejects_unsupported_output_type() -> None:
 
 def test_post_settlements_filters_by_multiple_rics() -> None:
     response = client.post(
-        "/settlements",
+        "/eod",
         params={"date": "2026-09-04", "type": "json"},
         json={"rics": ["SETH27", "SETH28"]},
     )
