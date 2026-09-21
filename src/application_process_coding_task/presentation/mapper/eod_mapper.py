@@ -30,13 +30,13 @@ def to_batch_eod_query(
 
 
 def to_eod_response(result: EodResult) -> EodResponse:
-    return EodResponse(
-        **{
-            "Asset SubType": result.asset_subtype,
-            "RIC": result.ric,
-            "Trade Date": result.trade_date,
-            "Ask": str(result.ask) if result.ask is not None else None,
-            "Bid": str(result.bid) if result.bid is not None else None,
-            "Settlement Price": str(result.settlement_price),
+    return EodResponse.model_validate(
+        {
+            "asset_subtype": result.asset_subtype,
+            "ric": result.ric,
+            "trade_date": result.trade_date,
+            "ask": str(result.ask) if result.ask is not None else None,
+            "bid": str(result.bid) if result.bid is not None else None,
+            "settlement_price": str(result.settlement_price),
         }
     )

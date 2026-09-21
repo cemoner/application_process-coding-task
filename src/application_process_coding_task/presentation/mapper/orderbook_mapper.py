@@ -26,17 +26,17 @@ def to_batch_orderbook_query(
 
 
 def to_orderbook_response(result: OrderBookResult) -> OrderBookResponse:
-    return OrderBookResponse(
-        **{
-            "#RIC": result.ric,
-            "Alias Underlying RIC": result.alias_underlying_ric,
-            "Domain": result.domain,
-            "Date-Time": result.date_time,
-            "GMT Offset": result.gmt_offset,
-            "Type": result.event_type,
-            "Bid Price": result.bid_price,
-            "Bid Size": result.bid_size,
-            "Ask Price": result.ask_price,
-            "Ask Size": result.ask_size,
+    return OrderBookResponse.model_validate(
+        {
+            "ric": result.ric,
+            "alias_underlying_ric": result.alias_underlying_ric,
+            "domain": result.domain,
+            "date_time": result.date_time,
+            "gmt_offset": result.gmt_offset,
+            "event_type": result.event_type,
+            "bid_price": result.bid_price,
+            "bid_size": result.bid_size,
+            "ask_price": result.ask_price,
+            "ask_size": result.ask_size,
         }
     )

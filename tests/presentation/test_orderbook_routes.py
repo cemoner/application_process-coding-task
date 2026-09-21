@@ -25,7 +25,11 @@ def test_get_orderbook_excludes_empty_quote_events() -> None:
     )
 
     assert response.status_code == 200
-    assert len(response.json()) == 8948
+    records = response.json()
+    assert records
+    assert all(
+        record["Bid Price"] is not None or record["Ask Price"] is not None for record in records
+    )
 
 
 def test_post_orderbook_filters_multiple_rics() -> None:

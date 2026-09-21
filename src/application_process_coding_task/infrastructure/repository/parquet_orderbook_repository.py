@@ -29,7 +29,11 @@ class ParquetOrderBookRepository:
             FROM read_parquet(?)
             WHERE "Domain" = 'Market Price'
               AND "Type" = 'Quote'
-              AND CAST("Date-Time" AS DATE) = ?
+              AND CAST(
+                  CAST("Date-Time" AS TIMESTAMPTZ)
+                  + ("GMT Offset" || ' hours')::INTERVAL
+                  AS DATE
+              ) = ?
               AND ("Bid Price" IS NOT NULL OR "Ask Price" IS NOT NULL)
         """
         parameters: list[object] = [str(self.source_path), trade_date]
