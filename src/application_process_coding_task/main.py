@@ -6,9 +6,13 @@ from application_process_coding_task.config import settings
 from application_process_coding_task.presentation.router.eod_routes import (
     router as eod_router,
 )
+from application_process_coding_task.presentation.router.orderbook_routes import (
+    router as orderbook_router,
+)
 
 api = FastAPI(title=settings.name)
 api.include_router(eod_router)
+api.include_router(orderbook_router)
 cli = typer.Typer()
 
 
