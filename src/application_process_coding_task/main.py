@@ -16,7 +16,7 @@ def health_check() -> dict[str, str]:
 def run_server() -> None:
     """Start the FastAPI server via the CLI."""
     uvicorn.run(
-        "application_process_coding_task.presentation.router.main:api",
+        "application_process_coding_task.main:api",
         host=settings.host,
         port=settings.port,
         reload=settings.reload,
