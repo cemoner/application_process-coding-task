@@ -8,11 +8,15 @@ from application_process_coding_task.domain.entity.settlement_record import (
 
 
 def to_settlement_record(row: Sequence[object]) -> SettlementRecord:
-    if len(row) != 3:
-        raise ValueError("Settlement row must contain RIC, trade date, and settlement price")
+    if len(row) != 4:
+        raise ValueError(
+            "Settlement row must contain asset subtype, RIC, trade date, and settlement price"
+        )
 
-    ric, trade_date, settlement_price = row
+    asset_subtype, ric, trade_date, settlement_price = row
 
+    if not isinstance(asset_subtype, str):
+        raise TypeError("Settlement asset subtype must be a string")
     if not isinstance(ric, str):
         raise TypeError("Settlement RIC must be a string")
     if not isinstance(trade_date, (date, str)):
@@ -25,7 +29,10 @@ def to_settlement_record(row: Sequence[object]) -> SettlementRecord:
     )
 
     return SettlementRecord(
+        asset_subtype=asset_subtype,
         ric=ric,
         trade_date=parsed_trade_date,
+        ask=None,
+        bid=None,
         settlement_price=Decimal(str(settlement_price)),
     )

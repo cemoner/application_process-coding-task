@@ -5,6 +5,9 @@ from decimal import Decimal
 
 @dataclass(frozen=True, slots=True)
 class SettlementRecord:
+    asset_subtype: str
     ric: str
     trade_date: date
+    ask: Decimal | None
+    bid: Decimal | None
     settlement_price: Decimal
