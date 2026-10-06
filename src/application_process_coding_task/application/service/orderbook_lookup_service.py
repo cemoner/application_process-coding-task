@@ -17,6 +17,7 @@ class OrderBookLookupService:
                 alias_underlying_ric=record.alias_underlying_ric,
                 domain=record.domain,
                 date_time=record.date_time,
+                date_time_text=record.date_time_text,
                 gmt_offset=record.gmt_offset,
                 event_type=record.event_type,
                 bid_price=record.bid_price,

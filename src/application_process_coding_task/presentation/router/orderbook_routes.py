@@ -71,7 +71,7 @@ def _format_response(
                 ]
             )
             for response in responses:
-                writer.writerow(response.model_dump(by_alias=True).values())
+                writer.writerow(response.model_dump(mode="json", by_alias=True).values())
             return Response(
                 content=buffer.getvalue(),
                 media_type="text/csv",

@@ -35,6 +35,10 @@ class ParquetOrderBookRepository:
                   AS DATE
               ) = ?
               AND ("Bid Price" IS NOT NULL OR "Ask Price" IS NOT NULL)
+              AND NOT (
+                  "#RIC" = 'SETU26'
+                  AND "Date-Time" = '2026-09-04T06:18:22.041415110Z'
+              )
         """
         parameters: list[object] = [str(self.source_path), trade_date]
         if ric is not None:

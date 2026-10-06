@@ -9,6 +9,7 @@ class OrderBookRecord:
     alias_underlying_ric: str | None
     domain: str
     date_time: datetime
+    date_time_text: str
     gmt_offset: str
     event_type: str
     bid_price: Decimal | None

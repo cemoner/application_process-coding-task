@@ -62,7 +62,7 @@ def _to_csv_response(responses: list[EodResponse]) -> Response:
     writer = csv.writer(buffer, delimiter=";")
     writer.writerow(["Asset SubType", "RIC", "Trade Date", "Ask", "Bid", "Settlement Price"])
     for response in responses:
-        writer.writerow(response.model_dump(by_alias=True).values())
+        writer.writerow(response.model_dump(mode="json", by_alias=True).values())
 
     return Response(
         content=buffer.getvalue(),

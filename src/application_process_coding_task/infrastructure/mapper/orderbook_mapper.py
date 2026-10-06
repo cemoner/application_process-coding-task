@@ -49,6 +49,11 @@ def to_orderbook_record(row: Sequence[object]) -> OrderBookRecord:
         alias_underlying_ric=alias_underlying_ric,
         domain=domain,
         date_time=parsed_date_time,
+        date_time_text=(
+            date_time
+            if isinstance(date_time, str)
+            else date_time.isoformat().replace("+00:00", "Z")
+        ),
         gmt_offset=gmt_offset,
         event_type=event_type,
         bid_price=_decimal_or_none(bid_price),
