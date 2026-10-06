@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.scripts]
-application-process-coding-task = "application_process_coding_task:main"
+application-process-coding-task = "application_process_coding_task.presentation.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.12.10,<0.13.0"]

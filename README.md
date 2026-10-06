@@ -16,8 +16,14 @@ Create the virtual environment and install the locked dependencies:
 uv sync
 ```
 
-The application reads settings from an ignored `.env` file using the `APP_` prefix. A local
-`.env` should contain values such as:
+The application has safe defaults for local execution. To customize them, copy the committed
+template to the ignored `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+The application reads settings from `.env` using the `APP_` prefix:
 
 ```dotenv
 APP_NAME=Coding Task API
@@ -32,12 +38,18 @@ APP_TARGET_ORDERBOOK_PATH=target_orderbook.csv
 Start the API locally:
 
 ```bash
-uv run python -m application_process_coding_task.main
+uv run application-process-coding-task start-server
 ```
 
 The server listens on the configured host and port. Swagger UI is available at
 `http://localhost:8000/docs`, and the ReDoc interface is available at
 `http://localhost:8000/redoc`.
+
+The same server can also be started directly with:
+
+```bash
+uv run python -m application_process_coding_task.main
+```
 
 ## Docker
 
@@ -48,8 +60,9 @@ docker compose up --build
 ```
 
 `compose.yaml` injects the local `.env` file into the container at runtime through
-Compose's `env_file` option. The `.env` file is intentionally not copied into the image
-and is excluded from Git.
+Compose's `env_file` option when it exists. The file is optional because the application
+also provides defaults. The `.env` file is intentionally not copied into the image and is
+excluded from Git.
 
 Stop the service with:
 
@@ -62,6 +75,12 @@ To run the image directly, build it and pass the environment file explicitly:
 ```bash
 docker build -t application-process-coding-task .
 docker run --env-file .env -p 8000:8000 application-process-coding-task
+```
+
+If you do not create `.env`, run the image without `--env-file`:
+
+```bash
+docker run -p 8000:8000 application-process-coding-task
 ```
 
 When `APP_PORT` is changed, use the same port on both sides of the direct Docker port
