@@ -1,7 +1,7 @@
 from datetime import date
 from pathlib import Path
 
-from application_process_coding_task.domain.entity.eod_record import EodRecord
+from application_process_coding_task.domain.dto.eod_record import EodRecord
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
     get_duckdb_connection,
 )

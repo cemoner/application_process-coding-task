@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from datetime import datetime
 from decimal import Decimal
 
-from application_process_coding_task.domain.entity.orderbook_record import (
+from application_process_coding_task.domain.dto.orderbook_record import (
     OrderBookRecord,
 )
 

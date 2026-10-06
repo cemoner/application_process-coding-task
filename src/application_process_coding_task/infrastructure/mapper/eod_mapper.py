@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from datetime import date
 from decimal import Decimal
 
-from application_process_coding_task.domain.entity.eod_record import (
+from application_process_coding_task.domain.dto.eod_record import (
     EodRecord,
 )
 
