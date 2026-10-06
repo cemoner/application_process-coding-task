@@ -15,7 +15,7 @@ from ..dependency import get_eod_service
 from ..dto.eod_batch_request import EodBatchRequest
 from ..dto.eod_request import EodRequest
 from ..dto.eod_response import EodResponse
-from ..mapper import (
+from ..mapper.eod_mapper import (
     to_batch_eod_query,
     to_eod_query,
     to_eod_response,
