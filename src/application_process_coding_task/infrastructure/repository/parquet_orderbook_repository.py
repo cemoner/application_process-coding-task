@@ -1,7 +1,7 @@
 from datetime import date
 from pathlib import Path
 
-from application_process_coding_task.domain.dto.orderbook_record import (
+from application_process_coding_task.domain.entity.orderbook_record import (
     OrderBookRecord,
 )
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
