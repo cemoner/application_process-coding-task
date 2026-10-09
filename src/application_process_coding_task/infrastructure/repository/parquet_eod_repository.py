@@ -2,6 +2,7 @@ from datetime import date
 from pathlib import Path
 
 from application_process_coding_task.domain.entity.eod_record import EodRecord
+from typing import Iterator
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
     get_duckdb_connection,
 )
@@ -17,32 +18,12 @@ class ParquetEodRepository:
     def find_by_date(
         self,
         trade_date: date,
-        ric: str | None = None,
-        rics: list[str] | None = None,
-    ) -> list[EodRecord]:
-        query = """
-            SELECT "#RIC", "Date-Time", "Bid Price", "Ask Price", "Price"
-            FROM read_parquet(?)
-            WHERE "Type" = 'Settlement Price'
-              AND CAST("Date-Time" AS DATE) = ?
-        """
-        parameters: list[object] = [str(self.source_path), trade_date]
-        if ric is not None:
-            query += ' AND "#RIC" = ?'
-            parameters.append(ric)
-        elif rics:
-            placeholders = ", ".join("?" for _ in rics)
-            query += f' AND "#RIC" IN ({placeholders})'
-            parameters.extend(rics)
-        query += """
-            QUALIFY ROW_NUMBER() OVER (
-                PARTITION BY "#RIC"
-                ORDER BY "Date-Time" DESC
-            ) = 1
-            ORDER BY "#RIC"
-        """
+        ric: str
+    ) -> Iterator[EodRecord]:
 
-        with get_duckdb_connection(self.source_path) as connection:
-            rows = connection.execute(query, parameters).fetchall()
 
-        return [to_eod_record(row) for row in rows]
+    def find_by_date(
+            self,
+            trade_date: date,
+            rics: list[str]
+    ) -> Iterator[EodRecord]:
