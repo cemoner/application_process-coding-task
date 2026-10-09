@@ -5,18 +5,18 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 
-from application_process_coding_task.application.dto.eod_query import EodQuery
-from application_process_coding_task.application.dto.output_format import OutputFormat
+from application_process_coding_task.application.dto.query.eod_query import EodQuery
+from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 from application_process_coding_task.application.service.eod_lookup_service import (
     EodLookupService,
 )
 
 from ..dependency import get_eod_service
-from ..dto.eod_batch_request import EodBatchRequest
-from ..dto.eod_request import EodRequest
-from ..dto.eod_response import EodResponse
+from application_process_coding_task.presentation.dto.request.multiple_eod_request import MultipleEodRequest
+from application_process_coding_task.presentation.dto.request.eod_request import EodRequest
+from application_process_coding_task.presentation.dto.response.eod_response import EodResponse
 from ..mapper.eod_mapper import (
-    to_batch_eod_query,
+    to_multiple_eod_query,
     to_eod_query,
     to_eod_response,
 )
@@ -43,10 +43,10 @@ def get_eod(
 @router.post("", response_model=list[EodResponse])
 def post_eod(
     request: Annotated[EodRequest, Depends()],
-    batch_request: EodBatchRequest,
+    batch_request: MultipleEodRequest,
     service: Annotated[EodLookupService, Depends(get_eod_service)],
 ) -> list[EodResponse] | Response:
-    query = to_batch_eod_query(request, batch_request)
+    query = to_multiple_eod_query(request, batch_request)
     results = service.find(query)
     responses = [to_eod_response(result) for result in results]
 

@@ -2,7 +2,7 @@ from datetime import date
 
 from pydantic import BaseModel
 
-from .output_format import OutputFormat
+from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 
 
 class OrderBookQuery(BaseModel):

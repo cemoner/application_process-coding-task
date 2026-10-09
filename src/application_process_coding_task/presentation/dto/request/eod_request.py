@@ -2,7 +2,7 @@ from datetime import date
 
 from pydantic import BaseModel, Field
 
-from application_process_coding_task.application.dto.output_format import OutputFormat
+from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 
 
 class EodRequest(BaseModel):

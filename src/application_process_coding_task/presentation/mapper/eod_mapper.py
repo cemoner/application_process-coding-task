@@ -1,13 +1,13 @@
-from application_process_coding_task.application.dto.eod_query import (
+from application_process_coding_task.application.dto.query.eod_query import (
     EodQuery,
 )
-from application_process_coding_task.application.dto.eod_result import (
+from application_process_coding_task.application.dto.result.eod_result import (
     EodResult,
 )
 
-from ..dto.eod_batch_request import EodBatchRequest
-from ..dto.eod_request import EodRequest
-from ..dto.eod_response import EodResponse
+from application_process_coding_task.presentation.dto.request.multiple_eod_request import MultipleEodRequest
+from application_process_coding_task.presentation.dto.request.eod_request import EodRequest
+from application_process_coding_task.presentation.dto.response.eod_response import EodResponse
 
 
 def to_eod_query(request: EodRequest) -> EodQuery:
@@ -18,9 +18,9 @@ def to_eod_query(request: EodRequest) -> EodQuery:
     )
 
 
-def to_batch_eod_query(
+def to_multiple_eod_query(
     request: EodRequest,
-    batch_request: EodBatchRequest,
+    batch_request: MultipleEodRequest,
 ) -> EodQuery:
     return EodQuery(
         rics=batch_request.rics,

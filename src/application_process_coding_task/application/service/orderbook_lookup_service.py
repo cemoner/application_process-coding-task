@@ -1,5 +1,5 @@
-from application_process_coding_task.application.dto.orderbook_query import OrderBookQuery
-from application_process_coding_task.application.dto.orderbook_result import OrderBookResult
+from application_process_coding_task.application.dto.query.orderbook_query import OrderBookQuery
+from application_process_coding_task.application.dto.result.orderbook_result import OrderBookResult
 from application_process_coding_task.domain.interface.orderbook_repository import (
     OrderBookRepository,
 )

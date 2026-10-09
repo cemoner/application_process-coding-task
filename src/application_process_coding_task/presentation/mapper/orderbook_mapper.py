@@ -1,9 +1,9 @@
-from application_process_coding_task.application.dto.orderbook_query import OrderBookQuery
-from application_process_coding_task.application.dto.orderbook_result import OrderBookResult
+from application_process_coding_task.application.dto.query.orderbook_query import OrderBookQuery
+from application_process_coding_task.application.dto.result.orderbook_result import OrderBookResult
 
-from ..dto.orderbook_batch_request import OrderBookBatchRequest
-from ..dto.orderbook_request import OrderBookRequest
-from ..dto.orderbook_response import OrderBookResponse
+from application_process_coding_task.presentation.dto.request.multiple_orderbook_request import MultipleOrderbookRequest
+from application_process_coding_task.presentation.dto.request.orderbook_request import OrderBookRequest
+from application_process_coding_task.presentation.dto.response.orderbook_response import OrderBookResponse
 
 
 def to_orderbook_query(request: OrderBookRequest) -> OrderBookQuery:
@@ -14,9 +14,9 @@ def to_orderbook_query(request: OrderBookRequest) -> OrderBookQuery:
     )
 
 
-def to_batch_orderbook_query(
+def to_multiple_orderbook_query(
     request: OrderBookRequest,
-    batch_request: OrderBookBatchRequest,
+    batch_request: MultipleOrderbookRequest,
 ) -> OrderBookQuery:
     return OrderBookQuery(
         rics=batch_request.rics,

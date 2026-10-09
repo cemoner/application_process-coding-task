@@ -1,5 +1,5 @@
-from application_process_coding_task.application.dto.eod_query import EodQuery
-from application_process_coding_task.application.dto.eod_result import EodResult
+from application_process_coding_task.application.dto.query.eod_query import EodQuery
+from application_process_coding_task.application.dto.result.eod_result import EodResult
 from application_process_coding_task.domain.interface.eod_repository import (
     EodRepository,
 )

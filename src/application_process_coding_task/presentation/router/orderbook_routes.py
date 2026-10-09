@@ -5,17 +5,17 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 
-from application_process_coding_task.application.dto.output_format import OutputFormat
+from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 from application_process_coding_task.application.service.orderbook_lookup_service import (
     OrderBookLookupService,
 )
 
 from ..dependency import get_orderbook_service
-from ..dto.orderbook_batch_request import OrderBookBatchRequest
-from ..dto.orderbook_request import OrderBookRequest
-from ..dto.orderbook_response import OrderBookResponse
+from application_process_coding_task.presentation.dto.request.multiple_orderbook_request import MultipleOrderbookRequest
+from application_process_coding_task.presentation.dto.request.orderbook_request import OrderBookRequest
+from application_process_coding_task.presentation.dto.response.orderbook_response import OrderBookResponse
 from ..mapper.orderbook_mapper import (
-    to_batch_orderbook_query,
+    to_multiple_orderbook_query,
     to_orderbook_query,
     to_orderbook_response,
 )
@@ -37,10 +37,10 @@ def get_orderbook(
 @router.post("", response_model=list[OrderBookResponse])
 def post_orderbook(
     request: Annotated[OrderBookRequest, Depends()],
-    batch_request: OrderBookBatchRequest,
+    batch_request: MultipleOrderbookRequest,
     service: Annotated[OrderBookLookupService, Depends(get_orderbook_service)],
 ) -> list[OrderBookResponse] | Response:
-    results = service.find(to_batch_orderbook_query(request, batch_request))
+    results = service.find(to_multiple_orderbook_query(request, batch_request))
     return _format_response(
         request.output_type, [to_orderbook_response(result) for result in results]
     )
