@@ -10,5 +10,4 @@ class EodResponse(BaseModel):
     ask: str | None = Field(default=None, alias="Ask")
     bid: str | None = Field(default=None, alias="Bid")
     settlement_price: str = Field(alias="Settlement Price")
-
     model_config = {"populate_by_name": True}

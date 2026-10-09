@@ -14,5 +14,4 @@ class OrderBookResponse(BaseModel):
     bid_size: Decimal | None = Field(alias="Bid Size")
     ask_price: Decimal | None = Field(alias="Ask Price")
     ask_size: Decimal | None = Field(alias="Ask Size")
-
     model_config = {"populate_by_name": True}
