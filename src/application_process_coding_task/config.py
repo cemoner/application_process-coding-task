@@ -9,8 +9,6 @@ class Settings(BaseSettings):
     port: int = 8000
     reload: bool = False
     source_path: Path = Path("source.parquet")
-    target_eod_path: Path = Path("target_eod.csv")
-    target_orderbook_path: Path = Path("target_orderbook.csv")
 
     model_config = SettingsConfigDict(
         env_file=".env",
