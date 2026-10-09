@@ -9,4 +9,4 @@ class EodQuery(BaseModel):
     ric: str | None = None
     rics: list[str] | None = None
     trade_date: date
-    output_type: OutputFormat = OutputFormat.JSON
+    output_type: OutputFormat = OutputFormat.CSV

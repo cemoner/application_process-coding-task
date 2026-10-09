@@ -8,6 +8,6 @@ from application_process_coding_task.application.dto.output_format import Output
 class OrderBookRequest(BaseModel):
     ric: str | None = Field(default=None, min_length=1)
     trade_date: date = Field(alias="date")
-    output_type: OutputFormat = Field(default=OutputFormat.JSON, alias="type")
+    output_type: OutputFormat = Field(default=OutputFormat.CSV, alias="type")
 
     model_config = {"populate_by_name": True}
