@@ -1,11 +1,11 @@
 from collections.abc import Iterator
 from pathlib import Path
 
-from application_process_coding_task.application.dto.query.eod_query import (
-    MultipleEodQuery,
-    SingleEodQuery,
-)
 from application_process_coding_task.domain.entity.eod_record import EodRecord
+from application_process_coding_task.domain.query.lookup_query import (
+    MultipleLookup,
+    SingleLookup,
+)
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
     get_duckdb_connection,
 )
@@ -35,13 +35,13 @@ class ParquetEodRepository:
                     ORDER BY "#RIC"
                 """
 
-    def find_single(self, query: SingleEodQuery) -> Iterator[EodRecord]:
+    def find_single(self, query: SingleLookup) -> Iterator[EodRecord]:
         sql = self.base_sql + ' AND "#RIC" = ? ' + self.qualify_sql
         parameters = [str(self.source_path), query.trade_date, query.ric]
 
         return self._stream_results(sql, parameters)
 
-    def find_multiple(self, query: MultipleEodQuery) -> Iterator[EodRecord]:
+    def find_multiple(self, query: MultipleLookup) -> Iterator[EodRecord]:
         placeholders = ", ".join("?" for _ in query.rics)
         sql = self.base_sql + f' AND "#RIC" IN ({placeholders}) ' + self.qualify_sql
         parameters = [str(self.source_path), query.trade_date, *query.rics]

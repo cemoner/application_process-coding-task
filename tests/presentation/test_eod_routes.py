@@ -65,3 +65,12 @@ def test_post_settlements_filters_by_multiple_rics() -> None:
         "SETH27",
         "SETH28",
     ]
+
+
+def test_post_settlements_rejects_empty_ric() -> None:
+    response = client.post(
+        "/eod",
+        json={"date": "2026-09-04", "type": "csv", "rics": [""]},
+    )
+
+    assert response.status_code == 422

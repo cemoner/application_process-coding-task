@@ -1,12 +1,11 @@
 from collections.abc import Iterator
-from datetime import date
 from pathlib import Path
 
-from application_process_coding_task.application.dto.query.orderbook_query import (
-    MultipleOrderBookQuery,
-    SingleOrderBookQuery,
-)
 from application_process_coding_task.domain.entity.orderbook_record import OrderBookRecord
+from application_process_coding_task.domain.query.lookup_query import (
+    MultipleLookup,
+    SingleLookup,
+)
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
     get_duckdb_connection,
 )
@@ -37,22 +36,18 @@ class ParquetOrderBookRepository:
                           AND ("Bid Price" IS NOT NULL OR "Ask Price" IS NOT NULL)
                         """
 
-    def find_single_quotes(
-        self, trade_date: date, query: SingleOrderBookQuery
-    ) -> Iterator[OrderBookRecord]:
+    def find_single(self, query: SingleLookup) -> Iterator[OrderBookRecord]:
 
         sql = self.base_sql + ' AND "#RIC" = ? ORDER BY "Date-Time"'
-        parameters: list[object] = [str(self.source_path), trade_date, query.ric]
+        parameters: list[object] = [str(self.source_path), query.trade_date, query.ric]
 
         return self._stream_results(sql, parameters)
 
-    def find_multiple_quotes(
-        self, trade_date: date, query: MultipleOrderBookQuery
-    ) -> Iterator[OrderBookRecord]:
+    def find_multiple(self, query: MultipleLookup) -> Iterator[OrderBookRecord]:
 
         placeholders = ", ".join("?" for _ in query.rics)
         sql = self.base_sql + f' AND "#RIC" IN ({placeholders}) ORDER BY "Date-Time"'
-        parameters: list[object] = [str(self.source_path), trade_date, *query.rics]
+        parameters: list[object] = [str(self.source_path), query.trade_date, *query.rics]
 
         return self._stream_results(sql, parameters)
 

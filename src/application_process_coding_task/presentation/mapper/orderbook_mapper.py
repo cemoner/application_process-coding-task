@@ -33,6 +33,9 @@ def to_multiple_orderbook_query(
 
 
 def to_orderbook_response(result: OrderBookResult) -> OrderBookResponse:
+    def decimal_to_string(value: object) -> str | None:
+        return str(value) if value is not None else None
+
     return OrderBookResponse.model_validate(
         {
             "ric": result.ric,
@@ -41,9 +44,9 @@ def to_orderbook_response(result: OrderBookResult) -> OrderBookResponse:
             "date_time": result.date_time_text,
             "gmt_offset": result.gmt_offset,
             "event_type": result.event_type,
-            "bid_price": result.bid_price,
-            "bid_size": result.bid_size,
-            "ask_price": result.ask_price,
-            "ask_size": result.ask_size,
+            "bid_price": decimal_to_string(result.bid_price),
+            "bid_size": decimal_to_string(result.bid_size),
+            "ask_price": decimal_to_string(result.ask_price),
+            "ask_size": decimal_to_string(result.ask_size),
         }
     )

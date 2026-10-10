@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from pydantic import BaseModel, Field
 
 
@@ -10,8 +8,8 @@ class OrderBookResponse(BaseModel):
     date_time: str = Field(alias="Date-Time")
     gmt_offset: str = Field(alias="GMT Offset")
     event_type: str = Field(alias="Type")
-    bid_price: Decimal | None = Field(alias="Bid Price")
-    bid_size: Decimal | None = Field(alias="Bid Size")
-    ask_price: Decimal | None = Field(alias="Ask Price")
-    ask_size: Decimal | None = Field(alias="Ask Size")
+    bid_price: str | None = Field(alias="Bid Price")
+    bid_size: str | None = Field(alias="Bid Size")
+    ask_price: str | None = Field(alias="Ask Price")
+    ask_size: str | None = Field(alias="Ask Size")
     model_config = {"populate_by_name": True}

@@ -18,6 +18,7 @@ def test_get_orderbook_returns_quote_events() -> None:
     assert records
     assert records[0]["ric"] == "SETU26"
     assert records[0]["event_type"] == "Quote"
+    assert isinstance(records[0]["ask_price"], str)
 
 
 def test_get_orderbook_excludes_empty_quote_events() -> None:
@@ -47,3 +48,12 @@ def test_post_orderbook_filters_multiple_rics() -> None:
     assert response.status_code == 200
     records = [json.loads(line) for line in response.text.splitlines()]
     assert {record["ric"] for record in records} == {"SETU26", "SETZ26"}
+
+
+def test_post_orderbook_rejects_empty_ric() -> None:
+    response = client.post(
+        "/orderbook",
+        json={"date": "2026-09-04", "type": "csv", "rics": [""]},
+    )
+
+    assert response.status_code == 422
