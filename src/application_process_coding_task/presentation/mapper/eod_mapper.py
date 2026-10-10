@@ -5,9 +5,10 @@ from application_process_coding_task.application.dto.query.eod_query import (
 from application_process_coding_task.application.dto.result.eod_result import (
     EodResult,
 )
-
-from application_process_coding_task.presentation.dto.request.multiple_eod_request import MultipleEodRequest
 from application_process_coding_task.presentation.dto.request.eod_request import EodRequest
+from application_process_coding_task.presentation.dto.request.multiple_eod_request import (
+    MultipleEodRequest,
+)
 from application_process_coding_task.presentation.dto.response.eod_response import EodResponse
 
 

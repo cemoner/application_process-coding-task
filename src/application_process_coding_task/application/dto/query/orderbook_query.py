@@ -9,8 +9,10 @@ class BaseQuery(BaseModel):
     trade_date: date
     output_type: OutputFormat = OutputFormat.CSV
 
+
 class SingleOrderBookQuery(BaseQuery):
     ric: str
+
 
 class MultipleOrderBookQuery(BaseQuery):
     rics: list[str]

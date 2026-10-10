@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+
 from application_process_coding_task.application.dto.query.eod_query import (
     MultipleEodQuery,
     SingleEodQuery,

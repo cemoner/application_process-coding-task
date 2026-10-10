@@ -1,7 +1,10 @@
-from datetime import date
-from typing import Protocol, Iterator
+from collections.abc import Iterator
+from typing import Protocol
 
-from application_process_coding_task.application.dto.query.eod_query import SingleEodQuery, MultipleEodQuery
+from application_process_coding_task.application.dto.query.eod_query import (
+    MultipleEodQuery,
+    SingleEodQuery,
+)
 from application_process_coding_task.domain.entity.eod_record import (
     EodRecord,
 )

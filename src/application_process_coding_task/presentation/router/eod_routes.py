@@ -1,23 +1,21 @@
-import csv
-from io import StringIO
-from typing import Annotated, Iterator
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from starlette.responses import StreamingResponse
 
-from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 from application_process_coding_task.application.service.eod_lookup_service import (
     EodLookupService,
 )
+from application_process_coding_task.presentation.dto.request.eod_request import EodRequest
+from application_process_coding_task.presentation.dto.request.multiple_eod_request import (
+    MultipleEodRequest,
+)
 
 from ..dependency import get_eod_service
-from application_process_coding_task.presentation.dto.request.multiple_eod_request import MultipleEodRequest
-from application_process_coding_task.presentation.dto.request.eod_request import EodRequest
-from application_process_coding_task.presentation.dto.response.eod_response import EodResponse
 from ..mapper.eod_mapper import (
-    to_multiple_eod_query,
     to_eod_query,
     to_eod_response,
+    to_multiple_eod_query,
 )
 from ..mapper.format_response import format_streaming_response
 
@@ -36,6 +34,7 @@ def get_eod(
         (to_eod_response(result) for result in results),
     )
 
+
 @router.post("", response_class=StreamingResponse)
 def post_eod(
     batch_request: MultipleEodRequest,
@@ -47,4 +46,3 @@ def post_eod(
         batch_request.output_type,
         (to_eod_response(result) for result in results),
     )
-

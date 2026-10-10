@@ -1,10 +1,10 @@
+from collections.abc import Iterator
 from datetime import date
 from pathlib import Path
-from typing import Iterator
 
 from application_process_coding_task.application.dto.query.orderbook_query import (
     MultipleOrderBookQuery,
-    SingleOrderBookQuery
+    SingleOrderBookQuery,
 )
 from application_process_coding_task.domain.entity.orderbook_record import OrderBookRecord
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
@@ -21,16 +21,24 @@ class ParquetOrderBookRepository:
 
         # Shared base SQL for quotes
         self.base_sql = """
-                        SELECT *
+                        SELECT "#RIC", \
+                               NULL AS "Alias Underlying RIC", \
+                               "Domain", \
+                               "Date-Time", \
+                               "GMT Offset", \
+                               "Type", \
+                               "Bid Price", \
+                               "Bid Size", \
+                               "Ask Price", \
+                               "Ask Size"
                         FROM read_parquet(?)
                         WHERE "Type" = 'Quote'
                           AND CAST("Date-Time" AS DATE) = ? \
+                          AND ("Bid Price" IS NOT NULL OR "Ask Price" IS NOT NULL)
                         """
 
     def find_single_quotes(
-            self,
-            trade_date: date,
-            query: SingleOrderBookQuery
+        self, trade_date: date, query: SingleOrderBookQuery
     ) -> Iterator[OrderBookRecord]:
 
         sql = self.base_sql + ' AND "#RIC" = ? ORDER BY "Date-Time"'
@@ -39,9 +47,7 @@ class ParquetOrderBookRepository:
         return self._stream_results(sql, parameters)
 
     def find_multiple_quotes(
-            self,
-            trade_date: date,
-            query: MultipleOrderBookQuery
+        self, trade_date: date, query: MultipleOrderBookQuery
     ) -> Iterator[OrderBookRecord]:
 
         placeholders = ", ".join("?" for _ in query.rics)
@@ -50,11 +56,7 @@ class ParquetOrderBookRepository:
 
         return self._stream_results(sql, parameters)
 
-    def _stream_results(
-            self,
-            sql: str,
-            parameters: list[object]
-    ) -> Iterator[OrderBookRecord]:
+    def _stream_results(self, sql: str, parameters: list[object]) -> Iterator[OrderBookRecord]:
 
         with get_duckdb_connection(self.source_path) as connection:
             cursor = connection.execute(sql, parameters)

@@ -3,10 +3,15 @@ from application_process_coding_task.application.dto.query.orderbook_query impor
     SingleOrderBookQuery,
 )
 from application_process_coding_task.application.dto.result.orderbook_result import OrderBookResult
-
-from application_process_coding_task.presentation.dto.request.multiple_orderbook_request import MultipleOrderbookRequest
-from application_process_coding_task.presentation.dto.request.orderbook_request import OrderBookRequest
-from application_process_coding_task.presentation.dto.response.orderbook_response import OrderBookResponse
+from application_process_coding_task.presentation.dto.request.multiple_orderbook_request import (
+    MultipleOrderbookRequest,
+)
+from application_process_coding_task.presentation.dto.request.orderbook_request import (
+    OrderBookRequest,
+)
+from application_process_coding_task.presentation.dto.response.orderbook_response import (
+    OrderBookResponse,
+)
 
 
 def to_orderbook_query(request: OrderBookRequest) -> SingleOrderBookQuery:
