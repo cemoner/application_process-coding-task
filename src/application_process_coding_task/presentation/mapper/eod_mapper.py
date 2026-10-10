@@ -19,11 +19,10 @@ def to_eod_query(request: EodRequest) -> EodQuery:
 
 
 def to_multiple_eod_query(
-    request: EodRequest,
-    batch_request: MultipleEodRequest,
+    request: MultipleEodRequest,
 ) -> EodQuery:
     return EodQuery(
-        rics=batch_request.rics,
+        rics=request.rics,
         trade_date=request.trade_date,
         output_type=request.output_type,
     )

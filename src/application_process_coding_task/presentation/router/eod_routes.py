@@ -1,9 +1,10 @@
 import csv
 from io import StringIO
-from typing import Annotated
+from typing import Annotated, Iterator
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
+from starlette.responses import StreamingResponse
 
 from application_process_coding_task.application.dto.query.eod_query import EodQuery
 from application_process_coding_task.application.dto.helper.output_format import OutputFormat
@@ -24,48 +25,34 @@ from ..mapper.eod_mapper import (
 router = APIRouter(prefix="/eod", tags=["eod"])
 
 
-@router.get("", response_model=list[EodResponse])
+@router.get("", response_class=StreamingResponse)
 def get_eod(
     request: Annotated[EodRequest, Depends()],
     service: Annotated[EodLookupService, Depends(get_eod_service)],
-) -> list[EodResponse] | Response:
+) -> StreamingResponse:
     query: EodQuery = to_eod_query(request)
     results = service.find(query)
-    responses = [to_eod_response(result) for result in results]
+    return _format_response(
+        request.output_type,
+        (to_eod_response(result) for result in results),
+    )
 
-    match request.output_type:
-        case OutputFormat.JSON:
-            return responses
-        case OutputFormat.CSV:
-            return _to_csv_response(responses)
-
-
-@router.post("", response_model=list[EodResponse])
+@router.post("", response_class=StreamingResponse)
 def post_eod(
-    request: Annotated[EodRequest, Depends()],
     batch_request: MultipleEodRequest,
     service: Annotated[EodLookupService, Depends(get_eod_service)],
-) -> list[EodResponse] | Response:
-    query = to_multiple_eod_query(request, batch_request)
+) -> StreamingResponse:
+    query = to_multiple_eod_query(batch_request)
     results = service.find(query)
-    responses = [to_eod_response(result) for result in results]
-
-    match request.output_type:
-        case OutputFormat.JSON:
-            return responses
-        case OutputFormat.CSV:
-            return _to_csv_response(responses)
-
-
-def _to_csv_response(responses: list[EodResponse]) -> Response:
-    buffer = StringIO()
-    writer = csv.writer(buffer, delimiter=";")
-    writer.writerow(["Asset SubType", "RIC", "Trade Date", "Ask", "Bid", "Settlement Price"])
-    for response in responses:
-        writer.writerow(response.model_dump(mode="json", by_alias=True).values())
-
-    return Response(
-        content=buffer.getvalue(),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=eod.csv"},
+    return _format_response(
+        batch_request.output_type,
+        (to_eod_response(result) for result in results),
     )
+
+
+
+def _format_response(
+        output_type: OutputFormat,
+        responses: Iterator[EodResponse]
+) -> StreamingResponse:
+

@@ -15,11 +15,10 @@ def to_orderbook_query(request: OrderBookRequest) -> OrderBookQuery:
 
 
 def to_multiple_orderbook_query(
-    request: OrderBookRequest,
-    batch_request: MultipleOrderbookRequest,
+    request: MultipleOrderbookRequest,
 ) -> OrderBookQuery:
     return OrderBookQuery(
-        rics=batch_request.rics,
+        rics=request.rics,
         trade_date=request.trade_date,
         output_type=request.output_type,
     )
