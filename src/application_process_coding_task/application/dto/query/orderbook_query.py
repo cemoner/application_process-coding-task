@@ -5,8 +5,12 @@ from pydantic import BaseModel
 from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 
 
-class OrderBookQuery(BaseModel):
-    ric: str | None = None
-    rics: list[str] | None = None
+class BaseQuery(BaseModel):
     trade_date: date
     output_type: OutputFormat = OutputFormat.CSV
+
+class SingleOrderBookQuery(BaseQuery):
+    ric: str
+
+class MultipleOrderBookQuery(BaseQuery):
+    rics: list[str]

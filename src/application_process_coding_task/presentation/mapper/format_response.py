@@ -5,11 +5,9 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 
-# 1. Define a Generic Type Variable bound to Pydantic's BaseModel
 T = TypeVar('T', bound=BaseModel)
 
 
-# 2. Use 'T' instead of a specific model like EodResponse
 def format_streaming_response(
         output_type: OutputFormat,
         responses: Iterator[T]

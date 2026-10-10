@@ -1,6 +1,7 @@
 from datetime import date
 from pathlib import Path
 
+from application_process_coding_task.application.dto.query.eod_query import SingleEodQuery, MultipleEodQuery
 from application_process_coding_task.domain.entity.eod_record import EodRecord
 from typing import Iterator
 
@@ -13,12 +14,6 @@ class ParquetEodRepository:
     def find_by_date(
         self,
         trade_date: date,
-        ric: str
+        query: SingleEodQuery | MultipleEodQuery
     ) -> Iterator[EodRecord]:
-
-
-    def find_by_date(
-            self,
-            trade_date: date,
-            rics: list[str]
-    ) -> Iterator[EodRecord]:
+        """Return EOD records for a date, optionally filtered by RICs."""

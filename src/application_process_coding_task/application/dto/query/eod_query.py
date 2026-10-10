@@ -4,9 +4,12 @@ from pydantic import BaseModel
 
 from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 
-
-class EodQuery(BaseModel):
-    ric: str | None = None
-    rics: list[str] | None = None
+class BaseEodQuery(BaseModel):
     trade_date: date
     output_type: OutputFormat = OutputFormat.CSV
+
+class SingleEodQuery(BaseEodQuery):
+    ric: str
+
+class MultipleEodQuery(BaseEodQuery):
+    rics: list[str]
