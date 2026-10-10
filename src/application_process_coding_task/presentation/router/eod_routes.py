@@ -5,7 +5,6 @@ from typing import Annotated, Iterator
 from fastapi import APIRouter, Depends
 from starlette.responses import StreamingResponse
 
-from application_process_coding_task.application.dto.query.eod_query import EodQuery
 from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 from application_process_coding_task.application.service.eod_lookup_service import (
     EodLookupService,
@@ -30,7 +29,7 @@ def get_eod(
     request: Annotated[EodRequest, Depends()],
     service: Annotated[EodLookupService, Depends(get_eod_service)],
 ) -> StreamingResponse:
-    query: EodQuery = to_eod_query(request)
+    query = to_eod_query(request)
     results = service.find(query)
     return format_streaming_response(
         request.output_type,
@@ -48,5 +47,4 @@ def post_eod(
         batch_request.output_type,
         (to_eod_response(result) for result in results),
     )
-
 

@@ -6,7 +6,7 @@ from application_process_coding_task.application.dto.helper.output_format import
 
 
 class EodRequest(BaseModel):
-    ric: str | None = Field(default=None, min_length=1)
+    ric: str = Field(min_length=1)
     trade_date: date = Field(alias="date")
     output_type: OutputFormat = Field(default=OutputFormat.CSV, alias="type")
 

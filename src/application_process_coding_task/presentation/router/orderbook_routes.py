@@ -5,7 +5,6 @@ from typing import Annotated, Iterator
 from fastapi import APIRouter, Depends
 from starlette.responses import StreamingResponse
 
-from application_process_coding_task.application.dto.helper.output_format import OutputFormat
 from application_process_coding_task.application.service.orderbook_lookup_service import (
     OrderBookLookupService,
 )
@@ -46,4 +45,3 @@ def post_orderbook(
         batch_request.output_type,
         (to_orderbook_response(result) for result in results),
     )
-

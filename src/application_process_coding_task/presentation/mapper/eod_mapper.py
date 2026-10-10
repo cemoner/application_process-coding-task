@@ -1,5 +1,6 @@
 from application_process_coding_task.application.dto.query.eod_query import (
-    EodQuery,
+    MultipleEodQuery,
+    SingleEodQuery,
 )
 from application_process_coding_task.application.dto.result.eod_result import (
     EodResult,
@@ -10,8 +11,8 @@ from application_process_coding_task.presentation.dto.request.eod_request import
 from application_process_coding_task.presentation.dto.response.eod_response import EodResponse
 
 
-def to_eod_query(request: EodRequest) -> EodQuery:
-    return EodQuery(
+def to_eod_query(request: EodRequest) -> SingleEodQuery:
+    return SingleEodQuery(
         ric=request.ric,
         trade_date=request.trade_date,
         output_type=request.output_type,
@@ -20,8 +21,8 @@ def to_eod_query(request: EodRequest) -> EodQuery:
 
 def to_multiple_eod_query(
     request: MultipleEodRequest,
-) -> EodQuery:
-    return EodQuery(
+) -> MultipleEodQuery:
+    return MultipleEodQuery(
         rics=request.rics,
         trade_date=request.trade_date,
         output_type=request.output_type,
