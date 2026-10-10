@@ -8,10 +8,8 @@ from application_process_coding_task.domain.entity.eod_record import (
 
 
 class EodRepository(Protocol):
-    def find_by_date(
-        self,
-        trade_date: date,
-        query: SingleEodQuery | MultipleEodQuery
+    def find_single(self, query: SingleEodQuery) -> Iterator[EodRecord]:
+        pass
 
-    ) -> Iterator[EodRecord]:
-        """Return EOD records for a date, optionally filtered by RICs."""
+    def find_multiple(self, query: MultipleEodQuery) -> Iterator[EodRecord]:
+        pass

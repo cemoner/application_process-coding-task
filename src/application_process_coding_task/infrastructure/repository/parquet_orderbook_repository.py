@@ -2,11 +2,11 @@ from datetime import date
 from pathlib import Path
 from typing import Iterator
 
-from application_process_coding_task.application.dto.query.orderbook_query import MultipleOrderBookQuery, \
+from application_process_coding_task.application.dto.query.orderbook_query import (
+    MultipleOrderBookQuery,
     SingleOrderBookQuery
-from application_process_coding_task.domain.entity.orderbook_record import (
-    OrderBookRecord,
 )
+from application_process_coding_task.domain.entity.orderbook_record import OrderBookRecord
 from application_process_coding_task.infrastructure.database.duckdb_connection import (
     get_duckdb_connection,
 )
@@ -19,10 +19,49 @@ class ParquetOrderBookRepository:
     def __init__(self, source_path: Path) -> None:
         self.source_path = source_path
 
-    def find_quotes_by_date(
-        self,
-        trade_date: date,
-        query: SingleOrderBookQuery | MultipleOrderBookQuery
-    ) -> Iterator[OrderBookRecord]:
-        """Return quote events for a date, optionally filtered by RICs."""
+        # Shared base SQL for quotes
+        self.base_sql = """
+                        SELECT *
+                        FROM read_parquet(?)
+                        WHERE "Type" = 'Quote'
+                          AND CAST("Date-Time" AS DATE) = ? \
+                        """
 
+    def find_single_quotes(
+            self,
+            trade_date: date,
+            query: SingleOrderBookQuery
+    ) -> Iterator[OrderBookRecord]:
+
+        sql = self.base_sql + ' AND "#RIC" = ? ORDER BY "Date-Time"'
+        parameters: list[object] = [str(self.source_path), trade_date, query.ric]
+
+        return self._stream_results(sql, parameters)
+
+    def find_multiple_quotes(
+            self,
+            trade_date: date,
+            query: MultipleOrderBookQuery
+    ) -> Iterator[OrderBookRecord]:
+
+        placeholders = ", ".join("?" for _ in query.rics)
+        sql = self.base_sql + f' AND "#RIC" IN ({placeholders}) ORDER BY "Date-Time"'
+        parameters: list[object] = [str(self.source_path), trade_date, *query.rics]
+
+        return self._stream_results(sql, parameters)
+
+    def _stream_results(
+            self,
+            sql: str,
+            parameters: list[object]
+    ) -> Iterator[OrderBookRecord]:
+
+        with get_duckdb_connection(self.source_path) as connection:
+            cursor = connection.execute(sql, parameters)
+
+            while True:
+                rows = cursor.fetchmany(1000)
+                if not rows:
+                    break
+                for row in rows:
+                    yield to_orderbook_record(row)

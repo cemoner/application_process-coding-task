@@ -8,11 +8,25 @@ from application_process_coding_task.domain.entity.orderbook_record import (
 )
 
 
+from datetime import date
+from typing import Protocol, Iterator
+from application_process_coding_task.domain.entity.orderbook_record import OrderBookRecord
+from application_process_coding_task.application.dto.query.orderbook_query import (
+    SingleOrderBookQuery,
+    MultipleOrderBookQuery
+)
+
 class OrderBookRepository(Protocol):
-    def find_quotes_by_date(
+    def find_single_quotes(
         self,
         trade_date: date,
-        query: SingleOrderBookQuery | MultipleOrderBookQuery
-
+        query: SingleOrderBookQuery
     ) -> Iterator[OrderBookRecord]:
-        """Return quote events for a date, optionally filtered by RIC."""
+        pass
+
+    def find_multiple_quotes(
+        self,
+        trade_date: date,
+        query: MultipleOrderBookQuery
+    ) -> Iterator[OrderBookRecord]:
+        pass

@@ -30,7 +30,7 @@ def get_eod(
     service: Annotated[EodLookupService, Depends(get_eod_service)],
 ) -> StreamingResponse:
     query = to_eod_query(request)
-    results = service.find(query)
+    results = service.find_single(query)
     return format_streaming_response(
         request.output_type,
         (to_eod_response(result) for result in results),
@@ -42,7 +42,7 @@ def post_eod(
     service: Annotated[EodLookupService, Depends(get_eod_service)],
 ) -> StreamingResponse:
     query = to_multiple_eod_query(batch_request)
-    results = service.find(query)
+    results = service.find_multiple(query)
     return format_streaming_response(
         batch_request.output_type,
         (to_eod_response(result) for result in results),

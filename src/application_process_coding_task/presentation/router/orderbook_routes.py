@@ -28,7 +28,7 @@ def get_orderbook(
     request: Annotated[OrderBookRequest, Depends()],
     service: Annotated[OrderBookLookupService, Depends(get_orderbook_service)],
 ) -> StreamingResponse:
-    results = service.find(to_orderbook_query(request))
+    results = service.find_single(to_orderbook_query(request))
     return format_streaming_response(
         request.output_type,
         (to_orderbook_response(result) for result in results)
@@ -40,7 +40,7 @@ def post_orderbook(
     batch_request: MultipleOrderbookRequest,
     service: Annotated[OrderBookLookupService, Depends(get_orderbook_service)],
 ) -> StreamingResponse:
-    results = service.find(to_multiple_orderbook_query(batch_request))
+    results = service.find_multiple(to_multiple_orderbook_query(batch_request))
     return format_streaming_response(
         batch_request.output_type,
         (to_orderbook_response(result) for result in results),
