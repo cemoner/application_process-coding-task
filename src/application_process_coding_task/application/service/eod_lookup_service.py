@@ -1,6 +1,9 @@
 from typing import Iterator
 
-from application_process_coding_task.application.dto.query.eod_query import EodQuery, SingleEodQuery, MultipleEodQuery
+from application_process_coding_task.application.dto.query.eod_query import (
+    MultipleEodQuery,
+    SingleEodQuery,
+)
 from application_process_coding_task.application.dto.result.eod_result import EodResult
 from application_process_coding_task.domain.interface.eod_repository import (
     EodRepository,

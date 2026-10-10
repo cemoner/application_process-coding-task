@@ -1,7 +1,9 @@
 from typing import Iterator
 
-from application_process_coding_task.application.dto.query.orderbook_query import OrderBookQuery, SingleOrderBookQuery, \
-    MultipleOrderBookQuery
+from application_process_coding_task.application.dto.query.orderbook_query import (
+    MultipleOrderBookQuery,
+    SingleOrderBookQuery,
+)
 from application_process_coding_task.application.dto.result.orderbook_result import OrderBookResult
 from application_process_coding_task.domain.interface.orderbook_repository import (
     OrderBookRepository,
@@ -14,4 +16,3 @@ class OrderBookLookupService:
 
     def find(self, query: SingleOrderBookQuery | MultipleOrderBookQuery) -> Iterator[OrderBookResult]:
         """Return order book events for a date, optionally filtered by RICs."""
-
