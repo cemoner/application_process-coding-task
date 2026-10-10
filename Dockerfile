@@ -10,8 +10,6 @@ RUN pip install --no-cache-dir uv
 COPY pyproject.toml uv.lock README.md ./
 COPY src ./src
 COPY source.parquet ./
-COPY target_eod.csv ./
-COPY target_orderbook.csv ./
 
 RUN uv sync --frozen --no-dev
 

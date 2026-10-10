@@ -49,6 +49,37 @@ The same server can also be started directly with:
 uv run python -m application_process_coding_task.main
 ```
 
+## API usage
+
+Single-RIC lookups use `GET`; multiple-RIC lookups use `POST`. The `type` value can be
+`csv` or `json`, and defaults to `csv`.
+
+```bash
+curl --no-buffer \
+  "http://localhost:8000/eod?ric=SETH27&date=2026-09-04&type=json"
+```
+
+```bash
+curl --no-buffer -X POST "http://localhost:8000/eod" \
+  -H "Content-Type: application/json" \
+  -d '{"date":"2026-09-04","rics":["SETH27","SETH28"],"type":"csv"}'
+```
+
+```bash
+curl --no-buffer \
+  "http://localhost:8000/orderbook?ric=SETU26&date=2026-09-04&type=json"
+```
+
+```bash
+curl --no-buffer -X POST "http://localhost:8000/orderbook" \
+  -H "Content-Type: application/json" \
+  -d '{"date":"2026-09-04","rics":["SETU26","SETZ26"],"type":"csv"}'
+```
+
+JSON responses are streamed as newline-delimited JSON (`application/x-ndjson`). CSV
+responses are streamed as semicolon-delimited data using the target-file column aliases.
+Use `--no-buffer` with curl to observe records as they arrive.
+
 ## Docker
 
 Build and start the API with Compose:
@@ -82,7 +113,8 @@ docker run -p 8000:8000 application-process-coding-task
 ```
 
 When `APP_PORT` is changed, use the same port on both sides of the direct Docker port
-mapping, for example `-p 9000:9000`.
+mapping, for example `-p 9000:9000`. Compose uses the same value for the host and
+container port.
 
 ## Quality checks
 
@@ -111,5 +143,5 @@ src/application_process_coding_task/
 └── main.py
 ```
 
-The supplied Parquet and CSV files are kept at the repository root and are available to
-the application through the configured paths.
+The supplied `source.parquet` file is used by the application through `APP_SOURCE_PATH`.
+The target CSV files are reference fixtures for validation and are not runtime inputs.
