@@ -3,12 +3,7 @@ from pathlib import Path
 
 from application_process_coding_task.domain.entity.eod_record import EodRecord
 from typing import Iterator
-from application_process_coding_task.infrastructure.database.duckdb_connection import (
-    get_duckdb_connection,
-)
-from application_process_coding_task.infrastructure.mapper.eod_mapper import (
-    to_eod_record,
-)
+
 
 
 class ParquetEodRepository:
