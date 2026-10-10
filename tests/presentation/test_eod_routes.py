@@ -33,12 +33,12 @@ def test_get_settlements_returns_csv() -> None:
         params={"ric": "SETH27", "date": "2026-09-04", "type": "csv"},
     )
 
-    rows = list(csv.DictReader(StringIO(response.text)))
+    rows = list(csv.DictReader(StringIO(response.text), delimiter=";"))
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/csv")
-    assert rows[0]["ric"] == "SETH27"
-    assert rows[0]["settlement_price"] == "118.6"
+    assert rows[0]["RIC"] == "SETH27"
+    assert rows[0]["Settlement Price"] == "118.6"
 
 
 def test_get_settlements_rejects_unsupported_output_type() -> None:

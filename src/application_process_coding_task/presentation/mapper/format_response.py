@@ -24,14 +24,14 @@ def format_streaming_response[T: BaseModel](
 
             def generate_csv() -> Iterator[str]:
                 buffer = StringIO()
-                writer = csv.writer(buffer)
+                writer = csv.writer(buffer, delimiter=";", lineterminator="\n")
                 is_first_row = True
 
                 for response in responses:
-                    data_dict = response.model_dump()
+                    data_dict = response.model_dump(by_alias=True)
 
                     if is_first_row:
-                        writer.writerow(data_dict.keys())
+                        writer.writerow(data_dict)
                         is_first_row = False
 
                     writer.writerow(data_dict.values())
